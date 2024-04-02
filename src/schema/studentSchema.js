@@ -23,7 +23,6 @@ const studentAccountSchema = new mongoose.Schema({
   },
   class: {
     type: String,
-    // require: true,
   },
   email: {
     type: String,
@@ -41,7 +40,6 @@ const studentAccountSchema = new mongoose.Schema({
   guardianContact: { type: String },
   address: {
     type: String,
-    // require: true,
   },
   image: {
     type: String,

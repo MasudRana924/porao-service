@@ -46,9 +46,8 @@ const teacherRegistration = async (req, res) => {
 };
 const generateJWTToken = (teacher) => {
   const teacherData = {
-    teacherId: teacher.teacherId,
-    phone: teacher.phone,
-    role: teacher.role,
+    teacherId: teacher?.teacherId,
+    role: teacher?.role,
   };
   const token = jwt.sign(teacherData, jwtSecret, {
     expiresIn: "7d",
@@ -192,7 +191,6 @@ const getSingleTeacher = async (req, res) => {
 const tutorProfileUpdate = async (req, res) => {
   try {
     const { name, email, phone, address, degree, expert, experience, gender, fees, versityName} = req.body;   
-    console.log("req.body",req.body);
     const { teacherId } = req.user;
     let result = {};
     const options = {
@@ -200,7 +198,7 @@ const tutorProfileUpdate = async (req, res) => {
       unique_filename: false,
       overwrite: true,
     };
-    console.log("req.file",req.file);
+
     if (req.file) {
       const file = req.file;
       result = await cloudinary.uploader.upload(file.path, options);
@@ -214,6 +212,7 @@ const tutorProfileUpdate = async (req, res) => {
     }
     const updateTutorProfile = await TeacherModel.tutorProfileUpdate(
       teacherId,
+      role='teacher',
       newData
     );
     const responseData = {
@@ -227,8 +226,10 @@ const tutorProfileUpdate = async (req, res) => {
       gender: updateTutorProfile?.gender || undefined,
       image: updateTutorProfile?.image || undefined,
       fees: updateTutorProfile?.fees,
+      role: updateTutorProfile?.role,
       versityName: updateTutorProfile?.versityName,
     };
+    console.log(responseData);
     res.created(responseData, "Tutor profile successfully updated");
   } catch (err) {
     errorResponseHandler(err, req, res);

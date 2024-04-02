@@ -1,11 +1,16 @@
 const express = require("express");
 const authRoute = require("./auth.route.js");
+const devRoute = require("./dev.route.js");
 const teacherRoute = require("./teacher.route.js");
 const slotRoute = require("./slots.route.js");
 const bookTeacherRoute = require("./bookteacher.route.js");
 const attendanceRoute = require("./attendance.route.js");
 const router = express.Router();
 const defaultRoutes = [
+  {
+    path: '/dev',
+    route: devRoute,
+  },
   {
     path: "/auth",
     route: authRoute,

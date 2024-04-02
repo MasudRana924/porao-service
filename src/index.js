@@ -3,20 +3,20 @@ const connectDatabase = require('./config/connection');
 const cookieParser = require("cookie-parser");
 const morgan = require('morgan');
 const bodyParser = require("body-parser");
-const fileUpload = require("express-fileupload");
 const cors = require('cors');
 require('dotenv').config();
 const routes = require('./routes/index.js');
-const app = express();
 const { responseHandler } = require('./helper/responseHandler');
+const { swaggerServe, swaggerSetup } = require('./config/swigger.js')
+const app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(fileUpload());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 app.use(morgan('dev'));
 app.use(responseHandler());
 app.use('/api/v1', routes);
+app.use("/api-list", swaggerServe, swaggerSetup);
 const port = process.env.PORT;
 connectDatabase();
 const server = app.listen(port, () => {
