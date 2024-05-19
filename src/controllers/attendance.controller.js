@@ -3,13 +3,14 @@ const { errorResponseHandler } = require("../helper/errorResponseHandler");
 const { statusCodes } = require("../helper/statusCodes.js");
 const createAttendanceRecord = async (req, res) => {
   try {
-    const { slotId, studentId, isPresent } = req.body;
+    const { slotId, studentId,attendanceDate,status } = req.body;
     const { teacherId } = req.user;
     const attendanceRecord = await AttendanceModel.createAttendanceRecord({
       teacherId,
       slotId,
       studentId,
-      isPresent,
+      attendanceDate,
+      status,
     });
     res.created(attendanceRecord, "Attendance updated successfully");
   } catch (err) {

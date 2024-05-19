@@ -10,19 +10,26 @@ const attendanceSchema = new mongoose.Schema({
   },
   teacherId: {
     type: String,
-    // required: true,
+    required: true,
+    ref:'TeacherAccount'
   },
   slotId: {
     type: String,
     // required: true,
+    ref:'Slots'
   },
   studentId: {
     type: String,
-    // required: true,
+    required: true,
+    ref:'StudentAccount'
   },
-  isPresent: {
-    type: Boolean,
-    default: false,
+  status: {
+    type: String,
+    required: true,
+  },
+  attendanceDate: {
+    type: String,
+    required: true,
   },
   createdAt: {
     type: Date,

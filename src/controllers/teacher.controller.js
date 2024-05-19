@@ -191,6 +191,7 @@ const getSingleTeacher = async (req, res) => {
 const tutorProfileUpdate = async (req, res) => {
   try {
     const { name, email, phone, address, degree, expert, experience, gender, fees, versityName} = req.body;   
+ 
     const { teacherId } = req.user;
     let result = {};
     const options = {
@@ -210,27 +211,27 @@ const tutorProfileUpdate = async (req, res) => {
     if (result.url) {
       newData.image = result.url;
     }
+    console.log("newData from body---",newData);
     const updateTutorProfile = await TeacherModel.tutorProfileUpdate(
       teacherId,
       role='teacher',
       newData
     );
-    const responseData = {
-      name: updateTutorProfile?.name,
-      email: updateTutorProfile?.email,
-      phone: updateTutorProfile?.phone,
-      address: updateTutorProfile?.address,
-      degree: updateTutorProfile?.degree,
-      expert: updateTutorProfile?.expert,
-      experience: updateTutorProfile?.experience,
-      gender: updateTutorProfile?.gender || undefined,
-      image: updateTutorProfile?.image || undefined,
-      fees: updateTutorProfile?.fees,
-      role: updateTutorProfile?.role,
-      versityName: updateTutorProfile?.versityName,
-    };
-    console.log(responseData);
-    res.created(responseData, "Tutor profile successfully updated");
+    // const responseData = {
+    //   name: updateTutorProfile?.name,
+    //   email: updateTutorProfile?.email,
+    //   phone: updateTutorProfile?.phone,
+    //   address: updateTutorProfile?.address,
+    //   degree: updateTutorProfile?.degree,
+    //   expert: updateTutorProfile?.expert,
+    //   experience: updateTutorProfile?.experience,
+    //   gender: updateTutorProfile?.gender || undefined,
+    //   image: updateTutorProfile?.image || undefined,
+    //   fees: updateTutorProfile?.fees,
+    //   role: updateTutorProfile?.role,
+    //   versityName: updateTutorProfile?.versityName,
+    // };
+    // res.created(responseData, "Tutor profile successfully updated");
   } catch (err) {
     errorResponseHandler(err, req, res);
   }
