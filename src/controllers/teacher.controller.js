@@ -216,21 +216,21 @@ const tutorProfileUpdate = async (req, res) => {
       {teacherId,
       newData}
     );
-    // const responseData = {
-    //   name: updateTutorProfile?.name,
-    //   email: updateTutorProfile?.email,
-    //   phone: updateTutorProfile?.phone,
-    //   address: updateTutorProfile?.address,
-    //   degree: updateTutorProfile?.degree,
-    //   expert: updateTutorProfile?.expert,
-    //   experience: updateTutorProfile?.experience,
-    //   gender: updateTutorProfile?.gender || undefined,
-    //   image: updateTutorProfile?.image || undefined,
-    //   fees: updateTutorProfile?.fees,
-    //   role: updateTutorProfile?.role,
-    //   versityName: updateTutorProfile?.versityName,
-    // };
-    // res.created(responseData, "Tutor profile successfully updated");
+    const responseData = {
+      name: updateTutorProfile?.name,
+      email: updateTutorProfile?.email,
+      phone: updateTutorProfile?.phone,
+      address: updateTutorProfile?.address,
+      degree: updateTutorProfile?.degree,
+      expert: updateTutorProfile?.expert,
+      experience: updateTutorProfile?.experience,
+      gender: updateTutorProfile?.gender || undefined,
+      image: updateTutorProfile?.image || undefined,
+      fees: updateTutorProfile?.fees,
+      role: updateTutorProfile?.role,
+      versityName: updateTutorProfile?.versityName,
+    };
+    res.created(responseData, "Tutor profile successfully updated");
   } catch (err) {
     errorResponseHandler(err, req, res);
   }

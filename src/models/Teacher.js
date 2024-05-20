@@ -52,18 +52,18 @@ const getSingleTeacher = async (teacherId) => {
 const tutorProfileUpdate = async ({teacherId, newData}) => {
   console.log("teacherId",teacherId);
   console.log("data from controller ----",newData);
-  // const updatedTutorProfile = await TeacherAccount.findOneAndUpdate(
-  //   { teacherId: teacherId },
-  //   newData,
-  //   {
-  //     runValidators: true,
-  //     useFindAndModify: false,
-  //     new: true,
-  //   }
+  const updatedTutorProfile = await TeacherAccount.findOneAndUpdate(
+    { teacherId: teacherId },
+    newData,
+    {
+      runValidators: true,
+      useFindAndModify: false,
+      new: true,
+    }
 
-  // );
-  // console.log("updatedTutorProfile----",updatedTutorProfile);
-  // return updatedTutorProfile;
+  );
+  console.log("updatedTutorProfile----",updatedTutorProfile);
+  return updatedTutorProfile;
 };
 module.exports = {
   createTeacherAccount,
