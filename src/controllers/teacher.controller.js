@@ -213,9 +213,8 @@ const tutorProfileUpdate = async (req, res) => {
     }
     console.log("newData from body---",newData);
     const updateTutorProfile = await TeacherModel.tutorProfileUpdate(
-      teacherId,
-      role='teacher',
-      newData
+      {teacherId,
+      newData}
     );
     // const responseData = {
     //   name: updateTutorProfile?.name,

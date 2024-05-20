@@ -49,7 +49,7 @@ const getSingleTeacher = async (teacherId) => {
   const teacher = await TeacherAccount.findOne({ teacherId: teacherId });
   return teacher;
 };
-const tutorProfileUpdate = async (teacherId, newData) => {
+const tutorProfileUpdate = async ({teacherId, newData}) => {
   console.log("teacherId",teacherId);
   console.log("data from controller ----",newData);
   // const updatedTutorProfile = await TeacherAccount.findOneAndUpdate(
