@@ -32,7 +32,7 @@ const bookedTeacherSchema = new mongoose.Schema({
   },
   day: {
     type: String,
-    required: true,
+    // required: true,
   },
   startTime: { type: String },
   endTime: { type: String },
