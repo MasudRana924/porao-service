@@ -5,14 +5,14 @@ const sendVerificationEmail = (email, otp) => {
          port: 465,
          service: 'gmail',
         auth: {
-          user: process.env.SMPT_MAIL,
-          pass: process.env.SMPT_PASSWORD,
+          user: 'masud.cse.dev@gmail.com',
+          pass: 'piff lwiq rzbj pybz',
         },
       });
     const mailOptions = {
-        from: process.env.EMAIL_USER,
+        from: 'masud.cse.dev@gmail.com',
         to: email,
-        subject: 'Account Verification OTP',
+        subject: 'Porao ',
         text: `Your verification code is: ${otp}`,
     };
 

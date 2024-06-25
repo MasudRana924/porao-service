@@ -12,9 +12,11 @@ cloudinary.config({
   api_key: "793652735628756",
   api_secret: "4lddg6ilcxsou-HotzvGd7L6fjA",
 });
+const crypto = require("crypto");
+const sendVerificationEmail = require("../config/nodemailer.js");
 const teacherRegistration = async (req, res) => {
   try {
-    const { name,email,password } = req.body;
+    const { name, email, password } = req.body;
     validate(
       { email, password },
       {
@@ -32,10 +34,17 @@ const teacherRegistration = async (req, res) => {
       });
     }
     const hashPassword = await bcrypt.hash(password, 9);
+    const otp = crypto.randomBytes(3).toString("hex");
+    const otpExpires = Date.now() + 3600000; // 1 hour from now
     const newTeacher = await TeacherModel.createTeacherAccount({
-      name, email, password,
+      name,
+      email,
+      password,
       password: hashPassword,
+      otp,
+      otpExpires,
     });
+    sendVerificationEmail(email, otp);
     res.created(
       newTeacher,
       "Teacher Registration is Successful. Your information will be verified."
@@ -76,7 +85,7 @@ const teacherLogin = async (req, res) => {
       });
     }
     const token = generateJWTToken(teacher);
-    
+
     const responseData = {
       token,
       name: teacher?.name,
@@ -191,8 +200,19 @@ const getSingleTeacher = async (req, res) => {
 };
 const tutorProfileUpdate = async (req, res) => {
   try {
-    const { name, email, phone, address, degree, expert, experience, gender, fees, versityName} = req.body;   
- 
+    const {
+      name,
+      email,
+      phone,
+      address,
+      degree,
+      expert,
+      experience,
+      gender,
+      fees,
+      versityName,
+    } = req.body;
+
     const { teacherId } = req.user;
     let result = {};
     const options = {
@@ -208,15 +228,26 @@ const tutorProfileUpdate = async (req, res) => {
         if (err) throw err;
       });
     }
-    const newData = { name, email, phone, address, degree, expert, experience, gender, fees, versityName };
+    const newData = {
+      name,
+      email,
+      phone,
+      address,
+      degree,
+      expert,
+      experience,
+      gender,
+      fees,
+      versityName,
+    };
     if (result.url) {
       newData.image = result.url;
     }
-    console.log("newData from body---",newData);
-    const updateTutorProfile = await TeacherModel.tutorProfileUpdate(
-      {teacherId,
-      newData}
-    );
+    console.log("newData from body---", newData);
+    const updateTutorProfile = await TeacherModel.tutorProfileUpdate({
+      teacherId,
+      newData,
+    });
     const responseData = {
       name: updateTutorProfile?.name,
       email: updateTutorProfile?.email,
@@ -243,5 +274,5 @@ module.exports = {
   updateTeacherSlots,
   getAllTeachers,
   getSingleTeacher,
-  tutorProfileUpdate
+  tutorProfileUpdate,
 };
