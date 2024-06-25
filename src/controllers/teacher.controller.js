@@ -76,6 +76,7 @@ const teacherLogin = async (req, res) => {
       });
     }
     const token = generateJWTToken(teacher);
+    
     const responseData = {
       token,
       name: teacher?.name,

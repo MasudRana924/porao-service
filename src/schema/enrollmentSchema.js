@@ -7,17 +7,12 @@ const enrollmentSchema = new mongoose.Schema({
     default: uuidv4,
     required: true,
   },
-  student: {
+  studentId: {
     type: String,
     ref: 'StudentAccount',
     required: true
   },
-  teacher: {
-    type: String,
-    ref: 'TeacherAccount',
-    required: true
-  },
-  batch: {
+  batchId: {
     type: String,
     ref: 'Batch',
     required: true

@@ -5,10 +5,9 @@ const BatchModel = require("../models/Batch");
 
 const createBatch = async (req, res) => {
   try {
-    const { name, description,capacity, subjects, days } = req.body;
-    console.log(req.body)
+    const { name, description,capacity, subject,days  } = req.body;
     const { teacherId } = req.user;
-    const data = { name, description, teacherId, capacity, subjects, days };
+    const data = { name, description, teacherId, capacity, subject, days };
     const createdBatch = await BatchModel.createBatch(data);
     res.status(201).json({
       message: 'Batch created successfully',
@@ -19,10 +18,13 @@ const createBatch = async (req, res) => {
   }
 };
 
-const getBatchesByTeacherController = async (req, res) => {
+const getBatchesByTeacherId = async (req, res) => {
   try {
-    const { teacherId } = req.params;
+    // const { teacherId } = req.params;
+    const { teacherId } = req.user;
+    console.log("teacherId",teacherId);
     const batches = await BatchModel.getBatchesByTeacher(teacherId);
+    console.log("batches",batches);
     res.json({
       message: 'Batches fetched successfully',
       batches
@@ -54,6 +56,6 @@ const getBatchByIdController = async (req, res) => {
 
 module.exports = {
   createBatch,
-  getBatchesByTeacherController,
+  getBatchesByTeacherId,
   getBatchByIdController
 };

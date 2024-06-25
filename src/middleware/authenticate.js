@@ -2,7 +2,6 @@ const jwtSecret = process.env.JWT_SECRET;
 const { errorResponseHandler } = require("../helper/errorResponseHandler");
 const { statusCodes } = require("../helper/statusCodes");
 const jsonwebtoken = require("jsonwebtoken");
-
 const createAuthenticationMiddleware = (role) => (req, res, next) => {
   try {
     const token = req.headers.authorization?.split(" ")[1] || req.headers.token;
@@ -25,7 +24,6 @@ const createAuthenticationMiddleware = (role) => (req, res, next) => {
         },
       });
     }
-    console.log("decoded.role---",decoded.role);
     if (decoded.role !== role) {
       throw Object.assign(new Error(), {
         status: statusCodes.UNAUTHORIZED,
@@ -35,17 +33,14 @@ const createAuthenticationMiddleware = (role) => (req, res, next) => {
       });
     }
     req.user = decoded;
-    // req.teacherId = decoded.teacherId;
     return next();
   } catch (err) {
     errorResponseHandler(err, req, res);
   }
 };
-
 const studentAuthenticate = createAuthenticationMiddleware("student");
 const teacherAuthenticate = createAuthenticationMiddleware("teacher");
 const adminAuthenticate = createAuthenticationMiddleware("admin");
-
 module.exports = {
   studentAuthenticate,
   teacherAuthenticate,

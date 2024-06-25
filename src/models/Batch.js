@@ -5,7 +5,7 @@ const createBatch = async (data) => {
   return createdBatch;
 };
 const getBatchesByTeacher = async (teacherId) => {
-  const batches = await BatchModel.find({ teacher: teacherId });
+  const batches = await BatchModel.find({ teacherId: teacherId });
   return batches;
 };
 const getBatchById = async (batchId) => {

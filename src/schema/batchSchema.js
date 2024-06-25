@@ -22,11 +22,12 @@ const batchSchema = new mongoose.Schema({
     type: Number,
   },
   students: [{ type: String, ref: 'StudentAccount' }],
-  subjects: [{ type: String }],
-  days: {
-    type: String,
-    enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-  }
+  subject: [{ type: String }],
+  // days: {
+  //   type: String,
+  //   enum: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+  // }
+  days: [{ type: String,enum: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] }]
 });
 
 const Batch = mongoose.model("Batch", batchSchema);

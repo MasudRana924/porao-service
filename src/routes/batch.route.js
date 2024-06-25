@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const {teacherAuthenticate} = require("../middleware/authenticate");
-const { createBatch } = require("../controllers/batch.controller");
-router.post("/create/new",createBatch);
+
+const { createBatch ,getBatchesByTeacherId} = require("../controllers/batch.controller");
+const { teacherAuthenticate } = require("../middleware/authenticate");
+router.post("/create/new",teacherAuthenticate,createBatch);
+router.get("/all",teacherAuthenticate,getBatchesByTeacherId);
 
 module.exports = router;
