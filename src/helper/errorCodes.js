@@ -31,6 +31,14 @@ const errorCodes = {
     reason: "ValidationError",
     message: "Phone number is not valid",
   },
+  40010: {
+    reason: "ValidationInvalidField",
+    message: "OTP is not Valid",
+  },
+  40011: {
+    reason: "ValidationInvalidField",
+    message: "Account is not Verified !",
+  },
   40012: {
     reason: "ValidationError",
     message: "Requested planId is not subscribed",

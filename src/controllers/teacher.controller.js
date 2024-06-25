@@ -66,60 +66,33 @@ const generateJWTToken = (teacher) => {
 
 const verifyTeacher = async (req, res) => {
   try {
-      const { email, otp } = req.body;
-
-      validate(
-          { email, otp },
-          {
-              email: "required|email",
-              otp: "required",
-          }
-      );
-
-      const teacher = await TeacherModel.findTeacherAccountByEmail(email);
-
-      if (!teacher) {
-          throw Object.assign(new Error(), {
-              status: statusCodes.NOT_FOUND,
-              error: {
-                  code: 40004,
-                  message: "Teacher account not found",
-              },
-          });
-      }
-
-      if (teacher.otp !== otp || teacher.otpExpires < Date.now()) {
-          throw Object.assign(new Error(), {
-              status: statusCodes.UNAUTHORIZED,
-              error: {
-                  code: 40007,
-                  message: "Invalid or expired OTP",
-              },
-          });
-      }
-
-      await TeacherModel.verifyTeacherAccount(email);
-
-      res.status(statusCodes.OK).json({
-          message: "Teacher account verified successfully."
+    const { email, otp } = req.body;
+    const teacher = await TeacherModel.findTeacherAccountByEmail(email);
+    if (!teacher) {
+      throw Object.assign(new Error(), {
+        status: statusCodes.NOT_FOUND,
+        error: {
+          code: 40004,
+          message: "Teacher account not found",
+        },
       });
+    }
+    if (teacher.otp !== otp || teacher.otpExpires < Date.now()) {
+      throw Object.assign(new Error(), {
+        status: statusCodes.UNAUTHORIZED,
+        error: {
+          code: 40010
+        },
+      });
+    }
+    await TeacherModel.verifyTeacherAccount(email);
+    res.status(statusCodes.OK).json({
+      message: "Teacher account verified successfully."
+    });
   } catch (err) {
-      errorResponseHandler(err, req, res);
+    errorResponseHandler(err, req, res);
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const teacherLogin = async (req, res) => {
   try {
@@ -130,6 +103,14 @@ const teacherLogin = async (req, res) => {
         status: statusCodes.UNAUTHORIZED,
         error: {
           code: 40101,
+        },
+      });
+    }
+    if (!teacher.isVerified) {
+      throw Object.assign(new Error(), {
+        status: statusCodes.UNAUTHORIZED,
+        error: {
+          code: 40011
         },
       });
     }
@@ -301,7 +282,6 @@ const tutorProfileUpdate = async (req, res) => {
     if (result.url) {
       newData.image = result.url;
     }
-    console.log("newData from body---", newData);
     const updateTutorProfile = await TeacherModel.tutorProfileUpdate({
       teacherId,
       newData,
