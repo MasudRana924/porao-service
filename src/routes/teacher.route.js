@@ -7,6 +7,7 @@ const {
   getSingleTeacher,
   getAllTeachers,
   tutorProfileUpdate,
+  verifyTeacher,
 } = require("../controllers/teacher.controller");
 const { teacherAuthenticate } = require("../middleware/authenticate");
 const { findteacherBookingById, findBookingBySlotId } = require("../controllers/bookteacher.controller");
@@ -20,6 +21,7 @@ const upload = multer({
   }
 });
 router.post("/register", teacherRegistration);
+router.post("/verify", verifyTeacher);
 router.post("/login", teacherLogin);
 router.put("/change-password", teacherAuthenticate, changeTeacherPassword);
 router.put("/update/profile",upload.single("image"),teacherAuthenticate,tutorProfileUpdate);

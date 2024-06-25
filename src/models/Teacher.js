@@ -8,6 +8,13 @@ const findTeacherAccountByEmail = async (email) => {
   const teacherAccount = await TeacherAccount.findOne({ email }).lean();
   return teacherAccount;
 };
+const verifyTeacherAccount = async (email) => {
+  return await TeacherAccount.findOneAndUpdate(
+      { email },
+      { isVerified: true, otp: null, otpExpires: null },
+      { new: true }
+  );
+};
 const findTeacherAccountByPhone = async (phone) => {
   const teacherAccount = await TeacherAccount.findOne({ phone }).lean();
   return teacherAccount;
@@ -74,5 +81,6 @@ module.exports = {
   updateTeacherSlots,
   getSingleTeacher,
   getAllTeachers,
-  tutorProfileUpdate
+  tutorProfileUpdate,
+  verifyTeacherAccount 
 };

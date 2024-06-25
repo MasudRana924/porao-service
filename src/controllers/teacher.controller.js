@@ -63,6 +63,64 @@ const generateJWTToken = (teacher) => {
   });
   return token;
 };
+
+const verifyTeacher = async (req, res) => {
+  try {
+      const { email, otp } = req.body;
+
+      validate(
+          { email, otp },
+          {
+              email: "required|email",
+              otp: "required",
+          }
+      );
+
+      const teacher = await TeacherModel.findTeacherAccountByEmail(email);
+
+      if (!teacher) {
+          throw Object.assign(new Error(), {
+              status: statusCodes.NOT_FOUND,
+              error: {
+                  code: 40004,
+                  message: "Teacher account not found",
+              },
+          });
+      }
+
+      if (teacher.otp !== otp || teacher.otpExpires < Date.now()) {
+          throw Object.assign(new Error(), {
+              status: statusCodes.UNAUTHORIZED,
+              error: {
+                  code: 40007,
+                  message: "Invalid or expired OTP",
+              },
+          });
+      }
+
+      await TeacherModel.verifyTeacherAccount(email);
+
+      res.status(statusCodes.OK).json({
+          message: "Teacher account verified successfully."
+      });
+  } catch (err) {
+      errorResponseHandler(err, req, res);
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const teacherLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -275,4 +333,5 @@ module.exports = {
   getAllTeachers,
   getSingleTeacher,
   tutorProfileUpdate,
+  verifyTeacher
 };
