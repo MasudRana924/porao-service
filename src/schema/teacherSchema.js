@@ -28,7 +28,12 @@ const teacherAccountSchema = new mongoose.Schema({
   subjects:{ type: String }, 
   bio: {
     type: String
-  }
+  },
+    role: {
+    type: String,
+    required: true,
+    default: "teacher",
+  },
 });
 
 const TeacherAccount = mongoose.model("TeacherAccount", teacherAccountSchema);

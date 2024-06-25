@@ -14,26 +14,26 @@ cloudinary.config({
 });
 const teacherRegistration = async (req, res) => {
   try {
-    const { name, phone, password, versityName, expert, experience } = req.body;
+    const { name,email,password } = req.body;
     validate(
-      { phone, password },
+      { email, password },
       {
-        phone: "required",
+        email: "required",
         password: "required",
       }
     );
-    const isPhoneExist = await TeacherModel.findTeacherAccountByPhone(phone);
-    if (isPhoneExist) {
+    const isTeacherExist = await TeacherModel.findTeacherAccountByEmail(email);
+    if (isTeacherExist) {
       throw Object.assign(new Error(), {
         status: statusCodes.CONFLICT,
         error: {
-          code: 40006,
+          code: 40007,
         },
       });
     }
     const hashPassword = await bcrypt.hash(password, 9);
     const newTeacher = await TeacherModel.createTeacherAccount({
-      name, phone, password, versityName, expert, experience,
+      name, email, password,
       password: hashPassword,
     });
     res.created(
@@ -56,8 +56,8 @@ const generateJWTToken = (teacher) => {
 };
 const teacherLogin = async (req, res) => {
   try {
-    const { phone, password } = req.body;
-    const teacher = await TeacherModel.findTeacherAccountByPhone(phone);
+    const { email, password } = req.body;
+    const teacher = await TeacherModel.findTeacherAccountByEmail(email);
     if (!teacher) {
       throw Object.assign(new Error(), {
         status: statusCodes.UNAUTHORIZED,

@@ -35,6 +35,7 @@ const createAuthenticationMiddleware = (role) => (req, res, next) => {
       });
     }
     req.user = decoded;
+    // req.teacherId = decoded.teacherId;
     return next();
   } catch (err) {
     errorResponseHandler(err, req, res);

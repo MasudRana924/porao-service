@@ -9,14 +9,17 @@ const batchSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    required: true
   },
   description: {
     type: String
   },
-  teacher: {
+  teacherId: {
     type: String,
-    ref: 'TeacherAccount'
+    // required: true,
+    ref: "TeacherAccount",
+},
+  capacity: {
+    type: Number,
   },
   students: [{ type: String, ref: 'StudentAccount' }],
   subjects: [{ type: String }],
