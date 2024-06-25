@@ -4,7 +4,7 @@ const { errorResponseHandler } = require('../utils/errorHandler');
 const createEnrollmentController = async (req, res) => {
   try {
     const { studentId, batchId } = req.body;
-    const data = { student: studentId, batch: batchId };
+    const data = {studentId,  batchId };
     const createdEnrollment = await createEnrollment(data);
     res.status(201).json({
       message: 'Enrollment created successfully',

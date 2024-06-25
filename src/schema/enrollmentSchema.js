@@ -12,6 +12,11 @@ const enrollmentSchema = new mongoose.Schema({
     ref: 'StudentAccount',
     required: true
   },
+  teacherId: {
+    type: String,
+    ref: 'TeacherAccount',
+    required: true
+  },
   batchId: {
     type: String,
     ref: 'Batch',

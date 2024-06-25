@@ -15,7 +15,7 @@ const batchSchema = new mongoose.Schema({
   },
   teacherId: {
     type: String,
-    // required: true,
+    required: true,
     ref: "TeacherAccount",
 },
   capacity: {
@@ -23,10 +23,6 @@ const batchSchema = new mongoose.Schema({
   },
   students: [{ type: String, ref: 'StudentAccount' }],
   subject: [{ type: String }],
-  // days: {
-  //   type: String,
-  //   enum: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-  // }
   days: [{ type: String,enum: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] }]
 });
 

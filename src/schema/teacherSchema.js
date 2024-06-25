@@ -1,81 +1,53 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const uuidv4 = require("uuid").v4;
 const teacherAccountSchema = new mongoose.Schema({
-    teacherId: {
+  teacherId: {
     type: String,
     default: uuidv4,
     required: true,
   },
   name: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   phoneNumber: {
-    type: String
+    type: String,
   },
   address: {
-    type: String
+    type: String,
   },
-  subjects:{ type: String }, 
+  subjects: { type: String },
   bio: {
-    type: String
+    type: String,
   },
-    role: {
+  role: {
     type: String,
     required: true,
     default: "teacher",
+  },
+  otp: {
+    type: String,
+  },
+  otpExpires: {
+    type: Date,
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
   },
 });
 
 const TeacherAccount = mongoose.model("TeacherAccount", teacherAccountSchema);
 module.exports = TeacherAccount;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // const mongoose = require("mongoose");
 // const { getCurrentDateTimeUTCPlus6 } = require("../helper/dateTimeHelpers");
