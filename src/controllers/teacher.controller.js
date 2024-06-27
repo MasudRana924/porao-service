@@ -29,7 +29,7 @@ const teacherRegistration = async (req, res) => {
       throw Object.assign(new Error(), {
         status: statusCodes.CONFLICT,
         error: {
-          code: 40007,
+          code: 40005,
         },
       });
     }
@@ -124,6 +124,7 @@ const teacherLogin = async (req, res) => {
       });
     }
     const token = generateJWTToken(teacher);
+    console.log("login-token",token)
 
     const responseData = {
       token,
@@ -251,7 +252,7 @@ const tutorProfileUpdate = async (req, res) => {
       fees,
       versityName,
     } = req.body;
-
+    console.log("body",req.body)
     const { teacherId } = req.user;
     let result = {};
     const options = {

@@ -7,6 +7,7 @@ const createBatch = async (req, res) => {
   try {
     const { name, description,capacity, subject,days  } = req.body;
     const { teacherId } = req.user;
+    console.log("teacherId",teacherId);
     const data = { name, description, teacherId, capacity, subject, days };
     const createdBatch = await BatchModel.createBatch(data);
     res.status(201).json({
@@ -20,11 +21,8 @@ const createBatch = async (req, res) => {
 
 const getBatchesByTeacherId = async (req, res) => {
   try {
-    // const { teacherId } = req.params;
     const { teacherId } = req.user;
-    console.log("teacherId",teacherId);
     const batches = await BatchModel.getBatchesByTeacher(teacherId);
-    console.log("batches",batches);
     res.json({
       message: 'Batches fetched successfully',
       batches

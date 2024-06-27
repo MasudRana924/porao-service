@@ -22,7 +22,7 @@ const batchSchema = new mongoose.Schema({
     type: Number,
   },
   students: [{ type: String, ref: 'StudentAccount' }],
-  subject: [{ type: String }],
+  subject: { type: String },
   days: [{ type: String,enum: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] }]
 });
 
