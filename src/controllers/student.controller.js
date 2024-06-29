@@ -8,20 +8,19 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const studentRegistration = async (req, res) => {
   try {
-    const { firstName, lastName, email, phone, password } = req.body;
-    const isExist = await StudentModel.findAccountByPhone(phone);
+    const { email, password } = req.body;
+    const isExist = await StudentModel.findAccountByEmail(email);
     if (isExist) {
       throw Object.assign(new Error(), {
         status: statusCodes.CONFLICT,
         error: {
-          code: 40006,
+          code: 40005,
         },
       });
     }
     const hashPassword = await bcrypt.hash(password, 9);
     const newStudent = await StudentModel.createStudentAccount({
-      firstName, lastName, email,
-      phone,
+      email,
       password: hashPassword,
     });
     res.created(
@@ -46,8 +45,8 @@ const generateJWTToken = (student) => {
 };
 const studentLogin = async (req, res) => {
   try {
-    const { phone, password } = req.body;
-    const student = await StudentModel.findAccountByPhone(phone);
+    const { email, password } = req.body;
+    const student = await StudentModel.findAccountByEmail(email);
     if (!student) {
       throw Object.assign(new Error(), {
         status: statusCodes.UNAUTHORIZED,

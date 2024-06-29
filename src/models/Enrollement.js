@@ -1,39 +1,36 @@
 const EnrollmentModel = require('../schema/enrollmentSchema')
 const createEnrollment = async (data) => {
-    const newEnrollment = new EnrollmentModel(data);
-    const createdEnrollment = await newEnrollment.save();
-    return createdEnrollment;
-  };
-  
-  const getEnrollmentsByStudent = async (studentId) => {
-    const enrollments = await EnrollmentModel.find({ student: studentId });
-    return enrollments;
-  };
-  
-  const getEnrollmentById = async (enrollmentId) => {
-    const enrollment = await EnrollmentModel.findById(enrollmentId);
-    return enrollment;
-  };
-  
-  const getEnrollmentsByBatch = async (batchId) => {
-    const enrollments = await EnrollmentModel.find({ batch: batchId });
-    return enrollments;
-  };
-  
-  const updateEnrollmentStatus = async (enrollmentId, status) => {
-    const enrollment = await EnrollmentModel.findById(enrollmentId);
-    if (!enrollment) {
-      throw new Error('Enrollment not found');
-    }
-    enrollment.status = status;
-    await enrollment.save();
-    return enrollment;
-  };
-  
-  module.exports = {
-    createEnrollment,
-    getEnrollmentsByStudent,
-    getEnrollmentById,
-    getEnrollmentsByBatch,
-    updateEnrollmentStatus
-  };
+  const newEnrollment = new EnrollmentModel(data);
+  const createdEnrollment = await newEnrollment.save();
+  return createdEnrollment;
+};
+const getEnrollmentsByBatchAndTeacher = async (batchId, teacherId) => {
+  const enrollments = await EnrollmentModel.aggregate([
+    { $match: { batchId, teacherId } },
+    {
+      $lookup: {
+        from: 'studentaccounts', // Collection name in MongoDB
+        localField: 'studentId',
+        foreignField: 'studentId',
+        as: 'studentDetails'
+      }
+    },
+    { $unwind: '$studentDetails' } // Flatten the array resulting from $lookup
+  ]);
+  return enrollments;
+};
+const updateEnrollmentStatus = async (enrollmentId, status) => {
+  const enrollment = await EnrollmentModel.findOne({ enrollmentId});
+  console.log("enrollment",enrollment);
+  // if (!enrollment) {
+  //   throw new Error('Enrollment not found or you are not authorized to update this enrollment');
+  // }
+  enrollment.status = status;
+  await enrollment.save();
+  return enrollment;
+};
+module.exports = {
+  createEnrollment,
+  getEnrollmentsByBatchAndTeacher,
+  updateEnrollmentStatus
+};

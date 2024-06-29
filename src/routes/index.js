@@ -6,6 +6,7 @@ const slotRoute = require("./slots.route.js");
 const bookTeacherRoute = require("./bookteacher.route.js");
 const attendanceRoute = require("./attendance.route.js");
 const batchRoute = require("./batch.route.js");
+const enrollmentRoute = require("./enrollment.route.js");
 const router = express.Router();
 const defaultRoutes = [
   {
@@ -35,6 +36,10 @@ const defaultRoutes = [
   {
     path: "/batch",
     route: batchRoute,
+  },
+  {
+    path: "/enrollment",
+    route: enrollmentRoute,
   },
 ];
 defaultRoutes.forEach((route) => {

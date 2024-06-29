@@ -4,10 +4,10 @@ const createStudentAccount = async (data) => {
   const createdStudentAccount = await newStudentAccount.save();
   return createdStudentAccount;
 };
-// const findAccountByEmail = async (email) => {
-//   const studentAccount = await StudentAccount.findOne({ email }).lean();
-//   return studentAccount;
-// };
+const findAccountByEmail = async (email) => {
+  const studentAccount = await StudentAccount.findOne({ email }).lean();
+  return studentAccount;
+};
 const findAccountByPhone = async (phone) => {
   const studentAccount = await StudentAccount.findOne({ phone }).lean();
   return studentAccount;
@@ -26,7 +26,7 @@ const changeStudentPassword = async (studentId, newUpdatedPassword) => {
 };
 module.exports = {
   createStudentAccount,
-  // findAccountByEmail,
+  findAccountByEmail,
   findAccountByPhone,
   changeStudentPassword,
   findStudentDetailsByyStudentId

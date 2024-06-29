@@ -1,11 +1,12 @@
-const { createEnrollment, getEnrollmentsByStudent, getEnrollmentById, getEnrollmentsByBatch, updateEnrollmentStatus } = require('../models/enrollment.model');
-const { errorResponseHandler } = require('../utils/errorHandler');
+const EnrollmentModel = require('../models/Enrollement')
+const { errorResponseHandler } = require("../helper/errorResponseHandler");
 
-const createEnrollmentController = async (req, res) => {
+const createEnrollment = async (req, res) => {
   try {
-    const { studentId, batchId } = req.body;
-    const data = {studentId,  batchId };
-    const createdEnrollment = await createEnrollment(data);
+    const { teacherId, batchId } = req.body;
+    const { studentId } = req.user;
+    const data = { studentId, teacherId, batchId };
+    const createdEnrollment = await EnrollmentModel.createEnrollment(data);
     res.status(201).json({
       message: 'Enrollment created successfully',
       enrollment: createdEnrollment
@@ -14,43 +15,12 @@ const createEnrollmentController = async (req, res) => {
     errorResponseHandler(err, req, res);
   }
 };
-
-const getEnrollmentsByStudentController = async (req, res) => {
-  try {
-    const { studentId } = req.params;
-    const enrollments = await getEnrollmentsByStudent(studentId);
-    res.json({
-      message: 'Enrollments fetched successfully',
-      enrollments
-    });
-  } catch (err) {
-    errorResponseHandler(err, req, res);
-  }
-};
-
-const getEnrollmentByIdController = async (req, res) => {
-  try {
-    const { enrollmentId } = req.params;
-    const enrollment = await getEnrollmentById(enrollmentId);
-    if (!enrollment) {
-      return res.status(404).json({
-        message: 'Enrollment not found'
-      });
-    }
-    res.json({
-      message: 'Enrollment fetched successfully',
-      enrollment
-    });
-  } catch (err) {
-    errorResponseHandler(err, req, res);
-  }
-};
-
-const getEnrollmentsByBatchController = async (req, res) => {
+const getEnrollmentsByBatchAndTeacher = async (req, res) => {
   try {
     const { batchId } = req.params;
-    const enrollments = await getEnrollmentsByBatch(batchId);
-    res.json({
+    const {teacherId}=req.user;
+    const enrollments = await EnrollmentModel.getEnrollmentsByBatchAndTeacher(batchId, teacherId);
+    res.status(200).json({
       message: 'Enrollments fetched successfully',
       enrollments
     });
@@ -58,27 +28,15 @@ const getEnrollmentsByBatchController = async (req, res) => {
     errorResponseHandler(err, req, res);
   }
 };
-
-const acceptEnrollmentController = async (req, res) => {
+const updateEnrollmentStatus = async (req, res) => {
   try {
     const { enrollmentId } = req.params;
-    const enrollment = await updateEnrollmentStatus(enrollmentId, 'approved');
-    res.json({
-      message: 'Enrollment accepted successfully',
-      enrollment
-    });
-  } catch (err) {
-    errorResponseHandler(err, req, res);
-  }
-};
-
-const rejectEnrollmentController = async (req, res) => {
-  try {
-    const { enrollmentId } = req.params;
-    const enrollment = await updateEnrollmentStatus(enrollmentId, 'rejected');
-    res.json({
-      message: 'Enrollment rejected successfully',
-      enrollment
+    const {teacherId}=req.user;
+    const { status } = req.body;
+    const updatedEnrollment = await EnrollmentModel.updateEnrollmentStatus(enrollmentId, status);
+    res.status(200).json({
+      message: 'Enrollment status updated successfully',
+      enrollment: updatedEnrollment
     });
   } catch (err) {
     errorResponseHandler(err, req, res);
@@ -86,9 +44,7 @@ const rejectEnrollmentController = async (req, res) => {
 };
 
 module.exports = {
-  createEnrollmentController,
-  getEnrollmentsByStudentController,
-  getEnrollmentByIdController,
-  getEnrollmentsByBatchController,
-  acceptEnrollmentController,
+  createEnrollment,
+  getEnrollmentsByBatchAndTeacher,
+  updateEnrollmentStatus
 }

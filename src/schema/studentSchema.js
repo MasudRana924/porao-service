@@ -9,7 +9,7 @@ const studentAccountSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    required: true
+    // required: true
   },
   email: {
     type: String,
@@ -28,6 +28,11 @@ const studentAccountSchema = new mongoose.Schema({
   },
   batch: {
     type: String
+  },
+    role: {
+    type: String,
+    required: true,
+    default: "student",
   },
   enrolledSubjects: [{ type: String }]
 });
