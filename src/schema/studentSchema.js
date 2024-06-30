@@ -23,11 +23,23 @@ const studentAccountSchema = new mongoose.Schema({
   phoneNumber: {
     type: String
   },
+  gender: {
+    type: String
+  },
   address: {
     type: String
   },
   batch: {
     type: String
+  },
+  standard: {
+    type: String
+  },
+  institution: {
+    type: String
+  },
+    image: {
+    type: String,
   },
     role: {
     type: String,

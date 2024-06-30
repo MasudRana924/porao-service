@@ -6,6 +6,13 @@ const { statusCodes } = require("../helper/statusCodes.js");
 const jwtSecret = process.env.JWT_SECRET;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
+const cloudinary = require("cloudinary");
+cloudinary.config({
+  cloud_name: "dwcbsche7",
+  api_key: "793652735628756",
+  api_secret: "4lddg6ilcxsou-HotzvGd7L6fjA",
+});
 const studentRegistration = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -125,9 +132,64 @@ const changePassword = async (req, res) => {
     errorResponseHandler(err, req, res);
   }
 };
+const studentProfileUpdate = async (req, res) => {
+  try {
+    const {
+      name, email, phoneNumber, address, institution, gender, standard, image
+    } = req.body;
+    console.log("body",req.body);
+    const { studentId } = req.user;
+    let result = {};
+    const options = {
+      use_filename: true,
+      unique_filename: false,
+      overwrite: true,
+    };
 
+    if (req.file) {
+      const file = req.file;
+      result = await cloudinary.uploader.upload(file.path, options);
+      fs.unlink(file.path, function (err) {
+        if (err) throw err;
+      });
+    }
+    const newData = {
+      name,
+      email,
+      phoneNumber,
+      address,
+      institution,
+      gender,
+      standard,
+      image
+    };
+    if (result.url) {
+      newData.image = result.url;
+    }
+    const updateStudentProfile = await StudentModel.studentProfileUpdate({
+      studentId,
+      newData,
+    });
+    const responseData = {
+      name: updateStudentProfile?.name,
+      email: updateStudentProfile?.email,
+      phone: updateStudentProfile?.phoneNumber,
+      address: updateStudentProfile?.address,
+      degree: updateStudentProfile?.degree,
+      institution: updateStudentProfile?.institution,
+      standard: updateStudentProfile?.standard,
+      gender: updateStudentProfile?.gender || undefined,
+      image: updateStudentProfile?.image || undefined,
+      role: updateStudentProfile?.role,
+    };
+    res.created(responseData, "Student profile successfully updated");
+  } catch (err) {
+    errorResponseHandler(err, req, res);
+  }
+};
 module.exports = {
   studentRegistration,
   studentLogin,
   changePassword,
+  studentProfileUpdate
 };

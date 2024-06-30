@@ -24,10 +24,28 @@ const changeStudentPassword = async (studentId, newUpdatedPassword) => {
   );
   return updatedShop;
 };
+
+const studentProfileUpdate = async ({studentId, newData}) => {
+  console.log("studentId",studentId);
+  console.log("data from controller ----",newData);
+  const updatedStudentProfile = await StudentAccount.findOneAndUpdate(
+    { studentId: studentId },
+    newData,
+    {
+      runValidators: true,
+      useFindAndModify: false,
+      new: true,
+    }
+
+  );
+  console.log("updatedTutorProfile----",updatedStudentProfile);
+  return updatedStudentProfile;
+};
 module.exports = {
   createStudentAccount,
   findAccountByEmail,
   findAccountByPhone,
   changeStudentPassword,
-  findStudentDetailsByyStudentId
+  findStudentDetailsByyStudentId,
+  studentProfileUpdate
 };
