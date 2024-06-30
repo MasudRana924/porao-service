@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const uuidv4 = require("uuid").v4;
-
+const { getCurrentDateTimeUTCPlus6 } = require("../helper/dateTimeHelpers");
 const attendanceSchema = new mongoose.Schema({
   attendanceId: {
     type: String,
@@ -24,7 +24,11 @@ const attendanceSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ['present', 'absent', 'late']
-  }
+  },
+  createdAt: {
+    type: Date,
+    default: () => getCurrentDateTimeUTCPlus6(),
+  },
 });
 
 const Attendance = mongoose.model("Attendance", attendanceSchema);

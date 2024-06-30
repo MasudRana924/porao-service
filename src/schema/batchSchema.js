@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const uuidv4 = require("uuid").v4;
-
+const { getCurrentDateTimeUTCPlus6 } = require("../helper/dateTimeHelpers");
 const batchSchema = new mongoose.Schema({
   batchId: {
     type: String,
@@ -23,7 +23,11 @@ const batchSchema = new mongoose.Schema({
   },
   students: [{ type: String, ref: 'StudentAccount' }],
   subject: { type: String },
-  days: [{ type: String,enum: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] }]
+  days: [{ type: String,enum: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] }],
+  createdAt: {
+    type: Date,
+    default: () => getCurrentDateTimeUTCPlus6(),
+  },
 });
 
 const Batch = mongoose.model("Batch", batchSchema);

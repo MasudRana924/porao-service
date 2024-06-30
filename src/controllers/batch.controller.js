@@ -32,7 +32,7 @@ const getBatchesByTeacherId = async (req, res) => {
   }
 };
 
-const getBatchByIdController = async (req, res) => {
+const getBatchById = async (req, res) => {
   try {
     const { batchId } = req.params;
     const batch = await BatchModel.getBatchById(batchId);
@@ -49,11 +49,19 @@ const getBatchByIdController = async (req, res) => {
     errorResponseHandler(err, req, res);
   }
 };
-
+const getAllBatches = async (req, res) => {
+  try {
+      const posts = await BatchModel.getAllBatch();
+      res.success(posts, "Batches  fetched successfully");
+  } catch (err) {
+      errorResponseHandler(err, req, res);
+  }
+};
 
 
 module.exports = {
   createBatch,
   getBatchesByTeacherId,
-  getBatchByIdController
+  getBatchById,
+  getAllBatches
 };

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const uuidv4 = require("uuid").v4;
+const { getCurrentDateTimeUTCPlus6 } = require("../helper/dateTimeHelpers");
 const teacherAccountSchema = new mongoose.Schema({
   teacherId: {
     type: String,
@@ -43,6 +44,10 @@ const teacherAccountSchema = new mongoose.Schema({
   isVerified: {
     type: Boolean,
     default: false,
+  },
+  createdAt: {
+    type: Date,
+    default: () => getCurrentDateTimeUTCPlus6(),
   },
 });
 
