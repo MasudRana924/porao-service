@@ -1,4 +1,4 @@
-const AttendanceModel = require('../models/Attendance');
+const AttendanceModel = require('../schema/attendanceSchema');
 
 const createAttendance = async (data) => {
   const newAttendance = new AttendanceModel(data);

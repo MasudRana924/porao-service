@@ -1,6 +1,6 @@
 const EnrollmentModel = require('../models/Enrollement')
 const { errorResponseHandler } = require("../helper/errorResponseHandler");
-
+const { statusCodes } = require("../helper/statusCodes.js");
 const createEnrollment = async (req, res) => {
   try {
     const { teacherId, batchId } = req.body;
@@ -70,10 +70,34 @@ const getEnrollmentByTeacherId = async (req, res) => {
     errorResponseHandler(err, req, res);
   }
 };
+const getStudentsByBatchId = async (req, res) => {
+  try {
+    const { batchId } = req.params;
+    console.log("batchId",batchId);
+    const students = await EnrollmentModel.getStudentDetailsByBatchId(batchId);
+    console.log('Students:', students);
+
+    if (!students.length) {
+      throw Object.assign(new Error(), {
+        status: statusCodes.NOT_FOUND,
+        error: {
+          code: 40406,
+        },
+      });
+    }
+    res.json({
+      message: 'Students fetched successfully',
+      students
+    });
+  } catch (err) {
+    errorResponseHandler(err, req, res);
+  }
+};
 module.exports = {
   createEnrollment,
   getEnrollmentsByBatchAndTeacher,
   updateEnrollmentStatus,
   getEnrollmentBySTudentId,
-  getEnrollmentByTeacherId
+  getEnrollmentByTeacherId,
+  getStudentsByBatchId
 }

@@ -5,10 +5,10 @@ const BatchModel = require("../models/Batch");
 
 const createBatch = async (req, res) => {
   try {
-    const { name, description,capacity, subject,days  } = req.body;
+    const { name, description,capacity, subject,days,startTime,endTime  } = req.body;
     const { teacherId } = req.user;
     console.log("teacherId",teacherId);
-    const data = { name, description, teacherId, capacity, subject, days };
+    const data = { name, description, teacherId, capacity, subject, days,startTime,endTime };
     const createdBatch = await BatchModel.createBatch(data);
     res.status(201).json({
       message: 'Batch created successfully',

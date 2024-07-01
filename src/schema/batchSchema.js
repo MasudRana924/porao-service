@@ -10,6 +10,12 @@ const batchSchema = new mongoose.Schema({
   name: {
     type: String,
   },
+  startTime: {
+    type: String,
+  },
+  endTime: {
+    type: String,
+  },
   description: {
     type: String
   },
@@ -17,13 +23,12 @@ const batchSchema = new mongoose.Schema({
     type: String,
     required: true,
     ref: "TeacherAccount",
-},
+  },
   capacity: {
     type: Number,
   },
-  students: [{ type: String, ref: 'StudentAccount' }],
   subject: { type: String },
-  days: [{ type: String,enum: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] }],
+  days: [{ type: String, enum: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] }],
   createdAt: {
     type: Date,
     default: () => getCurrentDateTimeUTCPlus6(),

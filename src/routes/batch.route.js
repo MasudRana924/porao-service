@@ -6,7 +6,6 @@ const { teacherAuthenticate } = require("../middleware/authenticate");
 router.post("/create/new",teacherAuthenticate,createBatch);
 router.get("/all",teacherAuthenticate,getBatchesByTeacherId);
 router.get("/all/batches",getAllBatches);
-router.get("/all/batches",getAllBatches);
-router.get("/:batchId",getBatchById);
+router.get("/:batchId",teacherAuthenticate,getBatchById);
 
 module.exports = router;
