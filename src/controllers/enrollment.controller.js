@@ -93,11 +93,43 @@ const getStudentsByBatchId = async (req, res) => {
     errorResponseHandler(err, req, res);
   }
 };
+
+const getStudentPendingEnrollment = async (req, res) => {
+  try {
+    const { studentId } = req.user;
+    const results = await EnrollmentModel.studentPendingEnrollment(studentId);
+    res.success(results, "Student pending get successfully.");
+  } catch (err) {
+    errorResponseHandler(err, req, res);
+  }
+};
+const getStudentApprovedEnrollment = async (req, res) => {
+  try {
+    const { studentId } = req.user;
+    const results = await EnrollmentModel.studentApprovedEnrollment(studentId);
+    res.success(results, "Student pending get successfully.");
+  } catch (err) {
+    errorResponseHandler(err, req, res);
+  }
+};
+const getStudentRejectedEnrollment = async (req, res) => {
+  try {
+    const { studentId } = req.user;
+    const results = await EnrollmentModel.studentRejectEnrollment(studentId);
+    res.success(results, "Student pending get successfully.");
+  } catch (err) {
+    errorResponseHandler(err, req, res);
+  }
+};
+
 module.exports = {
   createEnrollment,
   getEnrollmentsByBatchAndTeacher,
   updateEnrollmentStatus,
   getEnrollmentBySTudentId,
   getEnrollmentByTeacherId,
-  getStudentsByBatchId
+  getStudentsByBatchId,
+  getStudentPendingEnrollment,
+  getStudentApprovedEnrollment,
+  getStudentRejectedEnrollment
 }

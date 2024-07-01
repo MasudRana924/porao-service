@@ -152,11 +152,28 @@ const getStudentDetailsByBatchId = async (batchId) => {
   ]);
   return enrollments
 };
+
+
+const studentPendingEnrollment = async (studentId) => {
+  const results = await EnrollmentModel.find({ studentId: studentId, status: "pending" }).exec();
+  return results;
+};
+const studentApprovedEnrollment = async (studentId) => {
+  const results = await EnrollmentModel.find({ studentId: studentId, status: "approved" }).exec();
+  return results;
+};
+const studentRejectEnrollment = async (studentId) => {
+  const results = await EnrollmentModel.find({ studentId: studentId, status: "reject" }).exec();
+  return results;
+};
 module.exports = {
   createEnrollment,
   getEnrollmentsByBatchAndTeacher,
   updateEnrollmentStatus,
   getEnrollmentBySTudentId,
   getEnrollmentByTeacherId,
-  getStudentDetailsByBatchId
+  getStudentDetailsByBatchId,
+  studentPendingEnrollment,
+  studentApprovedEnrollment,
+  studentRejectEnrollment
 };
