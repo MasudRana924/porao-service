@@ -77,8 +77,10 @@ const studentLogin = async (req, res) => {
       name: student?.name,
       email: student?.email,
       role: student?.role,
-      class: student?.class,
-      phone: student?.phone,
+      standard: student?.standard,
+      phoneNumber: student?.phoneNumber,
+      institution: student?.institution,
+      gender: student?.gender,
       address: student?.address,
       image: student?.image,
     };

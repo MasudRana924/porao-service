@@ -1,4 +1,4 @@
-const EnrollmentModel = require('../schema/enrollmentSchema')
+const EnrollmentModel = require("../schema/enrollmentSchema");
 const createEnrollment = async (data) => {
   const newEnrollment = new EnrollmentModel(data);
   const createdEnrollment = await newEnrollment.save();
@@ -9,19 +9,19 @@ const getEnrollmentsByBatchAndTeacher = async (batchId, teacherId) => {
     { $match: { batchId, teacherId } },
     {
       $lookup: {
-        from: 'studentaccounts', // Collection name in MongoDB
-        localField: 'studentId',
-        foreignField: 'studentId',
-        as: 'studentDetails'
-      }
+        from: "studentaccounts", // Collection name in MongoDB
+        localField: "studentId",
+        foreignField: "studentId",
+        as: "studentDetails",
+      },
     },
-    { $unwind: '$studentDetails' } // Flatten the array resulting from $lookup
+    { $unwind: "$studentDetails" }, // Flatten the array resulting from $lookup
   ]);
   return enrollments;
 };
 const updateEnrollmentStatus = async (enrollmentId, status) => {
-  const enrollment = await EnrollmentModel.findOne({ enrollmentId});
-  console.log("enrollment",enrollment);
+  const enrollment = await EnrollmentModel.findOne({ enrollmentId });
+  console.log("enrollment", enrollment);
   // if (!enrollment) {
   //   throw new Error('Enrollment not found or you are not authorized to update this enrollment');
   // }
@@ -29,8 +29,56 @@ const updateEnrollmentStatus = async (enrollmentId, status) => {
   await enrollment.save();
   return enrollment;
 };
+// const getEnrollmentBySTudentId = async (studentId) => {
+//   const enrollments = await EnrollmentModel.find({ studentId: studentId });
+//   return enrollments ;
+//   ;
+// };
+const getEnrollmentBySTudentId = async (studentId) => {
+  const enrollments = await EnrollmentModel.aggregate([
+    {
+      $match: { studentId: studentId },
+    },
+    {
+      $lookup: {
+        from: "teacheraccounts",
+        localField: "teacherId",
+        foreignField: "teacherId",
+        as: "teacherInfo",
+      },
+    },
+    {
+      $unwind: "$teacherInfo",
+    },
+    {
+      $sort: {
+        createdAt: -1,
+      },
+    },
+    {
+      $lookup: {
+        from: 'batches',
+        localField: 'batchId',
+        foreignField: 'batchId',
+        as: 'batchInfo'
+      }
+    },
+    {
+      $unwind: '$batchInfo'
+    },
+    {
+      $project: {
+        _id: 0,
+        teacherId: 0,
+        batchId: 0,
+      },
+    },
+  ]);
+  return enrollments;
+};
 module.exports = {
   createEnrollment,
   getEnrollmentsByBatchAndTeacher,
-  updateEnrollmentStatus
+  updateEnrollmentStatus,
+  getEnrollmentBySTudentId,
 };

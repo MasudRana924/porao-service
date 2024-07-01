@@ -22,6 +22,7 @@ const teacherAccountSchema = new mongoose.Schema({
   },
   phoneNumber: {
     type: String,
+    sparse: true
   },
   address: {
     type: String,

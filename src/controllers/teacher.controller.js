@@ -17,6 +17,7 @@ const sendVerificationEmail = require("../config/nodemailer.js");
 const teacherRegistration = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+    console.log("data",req.body)
     validate(
       { email, password },
       {
