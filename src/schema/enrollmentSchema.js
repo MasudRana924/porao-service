@@ -25,7 +25,7 @@ const enrollmentSchema = new mongoose.Schema({
   status: {
     type: String,
     default: 'pending',
-    enum: ['pending', 'approved', 'ejected']
+    enum: ['pending', 'approved', 'rejected']
   },
   createdAt: {
     type: Date,

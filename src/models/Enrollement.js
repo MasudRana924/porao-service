@@ -19,6 +19,9 @@ const getEnrollmentsByBatchAndTeacher = async (batchId, teacherId) => {
   ]);
   return enrollments;
 };
+
+
+
 const updateEnrollmentStatus = async (enrollmentId, status) => {
   const enrollment = await EnrollmentModel.findOne({ enrollmentId });
   console.log("enrollment", enrollment);
@@ -29,11 +32,6 @@ const updateEnrollmentStatus = async (enrollmentId, status) => {
   await enrollment.save();
   return enrollment;
 };
-// const getEnrollmentBySTudentId = async (studentId) => {
-//   const enrollments = await EnrollmentModel.find({ studentId: studentId });
-//   return enrollments ;
-//   ;
-// };
 const getEnrollmentBySTudentId = async (studentId) => {
   const enrollments = await EnrollmentModel.aggregate([
     {
@@ -76,9 +74,55 @@ const getEnrollmentBySTudentId = async (studentId) => {
   ]);
   return enrollments;
 };
+
+
+// teacher enrollment
+const getEnrollmentByTeacherId = async (teacherId) => {
+  const enrollments = await EnrollmentModel.aggregate([
+    {
+      $match: { teacherId: teacherId },
+    },
+    {
+      $lookup: {
+        from: "studentaccounts",
+        localField: "studentId",
+        foreignField: "studentId",
+        as: "studentInfo",
+      },
+    },
+    {
+      $unwind: "$studentInfo",
+    },
+    {
+      $sort: {
+        createdAt: -1,
+      },
+    },
+    {
+      $lookup: {
+        from: 'batches',
+        localField: 'batchId',
+        foreignField: 'batchId',
+        as: 'batchInfo'
+      }
+    },
+    {
+      $unwind: '$batchInfo'
+    },
+    {
+      $project: {
+        _id: 0,
+        studentId: 0,
+        batchId: 0,
+      },
+    },
+  ]);
+  return enrollments;
+};
 module.exports = {
   createEnrollment,
   getEnrollmentsByBatchAndTeacher,
   updateEnrollmentStatus,
   getEnrollmentBySTudentId,
+  getEnrollmentByTeacherId
 };

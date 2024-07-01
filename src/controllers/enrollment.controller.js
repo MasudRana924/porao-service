@@ -31,8 +31,8 @@ const getEnrollmentsByBatchAndTeacher = async (req, res) => {
 const updateEnrollmentStatus = async (req, res) => {
   try {
     const { enrollmentId } = req.params;
-    const {teacherId}=req.user;
     const { status } = req.body;
+    console.log("status",status)
     const updatedEnrollment = await EnrollmentModel.updateEnrollmentStatus(enrollmentId, status);
     res.status(200).json({
       message: 'Enrollment status updated successfully',
@@ -56,9 +56,24 @@ const getEnrollmentBySTudentId = async (req, res) => {
     errorResponseHandler(err, req, res);
   }
 };
+
+// teacher enrollment
+const getEnrollmentByTeacherId = async (req, res) => {
+  try {
+    const { teacherId } = req.user;
+    const enrollments = await EnrollmentModel.getEnrollmentByTeacherId(teacherId);
+    res.json({
+      message: 'Enrollments fetched successfully',
+      enrollments
+    });
+  } catch (err) {
+    errorResponseHandler(err, req, res);
+  }
+};
 module.exports = {
   createEnrollment,
   getEnrollmentsByBatchAndTeacher,
   updateEnrollmentStatus,
-  getEnrollmentBySTudentId
+  getEnrollmentBySTudentId,
+  getEnrollmentByTeacherId
 }
