@@ -18,14 +18,14 @@ const getAttendanceByStudentLastMonth = async (filter) => {
   return attendance;
 };
 
-const getAttendanceByBatch = async (batchId) => {
-  const attendance = await AttendanceModel.find({ batch: batchId });
+const getAttendanceByBatchnadStudentId = async (batchId,studentId) => {
+  const attendance = await AttendanceModel.find({ batchId: batchId,studentId:studentId });
   return attendance;
 };
 
 module.exports = {
   createAttendance,
   getAttendanceByStudent,
-  getAttendanceByBatch,
-  getAttendanceByStudentLastMonth
+  getAttendanceByStudentLastMonth,
+  getAttendanceByBatchnadStudentId
 };

@@ -40,10 +40,13 @@ const getAttendanceByStudent = async (req, res) => {
   }
 };
 
-const getAttendanceByBatch = async (req, res) => {
+const getAttendanceByBatchnadStudentId = async (req, res) => {
   try {
     const { batchId } = req.params;
-    const attendance = await AttendanceModel.getAttendanceByBatch(batchId);
+    const { studentId } = req.user;
+    console.log("batchId",batchId);
+    console.log("batchId",studentId);
+    const attendance = await AttendanceModel.getAttendanceByBatchnadStudentId(batchId,studentId);
     res.success(attendance, 'Attendance fetched successfully');
   } catch (err) {
     errorResponseHandler(err, req, res);
@@ -101,6 +104,6 @@ const getAttendanceOfLastThreeMonths = async (req, res) => {
 module.exports = {
   createAttendance,
   getAttendanceByStudent,
-  getAttendanceByBatch,
-  getAttendanceOfLastThreeMonths
+  getAttendanceOfLastThreeMonths,
+  getAttendanceByBatchnadStudentId
 };
