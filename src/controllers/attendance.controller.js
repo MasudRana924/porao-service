@@ -40,14 +40,33 @@ const getAttendanceByStudent = async (req, res) => {
   }
 };
 
+// const getAttendanceByBatchnadStudentId = async (req, res) => {
+//   try {
+//     const { batchId } = req.params;
+//     const { studentId } = req.user;
+//     console.log("batchId",batchId);
+//     console.log("batchId",studentId);
+//     const attendance = await AttendanceModel.getAttendanceByBatchnadStudentId(batchId,studentId);
+//     res.success(attendance, 'Attendance fetched successfully');
+//   } catch (err) {
+//     errorResponseHandler(err, req, res);
+//   }
+// };
+
 const getAttendanceByBatchnadStudentId = async (req, res) => {
   try {
-    const { batchId } = req.params;
+    const { batchId, page, perPage } = req.query;
+    console.log("batchId",req.query);
+    const currentPage = parseInt(page, 10) || 1;
+    const itemsPerPage = parseInt(perPage, 10) || 4;
     const { studentId } = req.user;
-    console.log("batchId",batchId);
-    console.log("batchId",studentId);
-    const attendance = await AttendanceModel.getAttendanceByBatchnadStudentId(batchId,studentId);
-    res.success(attendance, 'Attendance fetched successfully');
+    console.log("studentId",studentId);
+    const { results, totalResult } = await AttendanceModel.getAttendanceByBatchnadStudentId(batchId, currentPage, itemsPerPage,studentId);
+    const allResults = {
+      results,
+      totalResult,
+    };
+    res.success(allResults, "Attendance Fetched Successfully.");
   } catch (err) {
     errorResponseHandler(err, req, res);
   }

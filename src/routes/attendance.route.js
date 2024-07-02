@@ -5,6 +5,7 @@ const { createAttendance, getAttendanceByStudent,getAttendanceOfLastThreeMonths,
 router.post("/record/student/attendance",teacherAuthenticate,  createAttendance
 );
 router.get("/student/attendance",studentAuthenticate,  getAttendanceByStudent);
-router.get("/student/attendance/:batchId",studentAuthenticate,  getAttendanceByBatchnadStudentId);
+// router.get("/student/attendance/:batchId",studentAuthenticate,  getAttendanceByBatchnadStudentId);
+router.get("/student",studentAuthenticate,  getAttendanceByBatchnadStudentId);
 router.get('/student/last-three-months', studentAuthenticate,getAttendanceOfLastThreeMonths);
 module.exports = router;
