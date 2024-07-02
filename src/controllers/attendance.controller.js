@@ -49,8 +49,58 @@ const getAttendanceByBatch = async (req, res) => {
     errorResponseHandler(err, req, res);
   }
 };
+
+// Controller
+const getAttendanceOfLastThreeMonths = async (req, res) => {
+  try {
+    const { studentId } = req.user;
+    const currentMonth = new Date().getMonth(); // get current month (0-11)
+    const currentYear = new Date().getFullYear();
+
+    const threeMonthsAgo = new Date(currentYear, currentMonth - 3, 1); // 3 months ago
+    console.log("currentMonth", currentMonth);
+    console.log("currentYear", currentYear);
+    console.log("threeMonthsAgo", threeMonthsAgo);
+
+    const filter = {
+      studentId: studentId,
+      date: {
+        $gte: threeMonthsAgo, 
+        $lt: new Date(),
+      },
+    };
+
+    const attendance = await AttendanceModel.getAttendanceByStudentLastMonth(filter);
+
+    // Initialize attendanceByMonth with 0 for each month
+    const attendanceByMonth = {};
+    for (let i = 0; i < 3; i++) {
+      const month = currentMonth - i + 1;
+      const year = currentYear;
+      if (month < 1) {
+        month += 12;
+        year -= 1;
+      }
+      const key = `${year}-${month.toString().padStart(2, '0')}`;
+      attendanceByMonth[key] = 0;
+    }
+
+    // Count attendance for each month
+    attendance.forEach((item) => {
+      const month = item.date.getMonth() + 1;
+      const year = item.date.getFullYear();
+      const key = `${year}-${month.toString().padStart(2, '0')}`;
+      attendanceByMonth[key]++;
+    });
+
+    res.success(attendanceByMonth, 'Attendance of last 3 months fetched successfully');
+  } catch (err) {
+    errorResponseHandler(err, req, res);
+  }
+};
 module.exports = {
   createAttendance,
   getAttendanceByStudent,
-  getAttendanceByBatch
+  getAttendanceByBatch,
+  getAttendanceOfLastThreeMonths
 };

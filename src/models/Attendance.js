@@ -11,24 +11,13 @@ const getAttendanceByStudent = async (studentId) => {
   const attendance = await AttendanceModel.find({ studentId: studentId });
   return attendance;
 };
-// const getAttendanceByStudent = async (studentId) => {
-//     const attendance = await AttendanceModel.find({ studentId: studentId });
-//     const totalAttendance = attendance.length;
-//     const presentCount = attendance.filter((a) => a.status === 'present').length;
-//     const absentCount = attendance.filter((a) => a.status === 'absent').length;
+// Model
+const getAttendanceByStudentLastMonth = async (filter) => {
+  console.log("filter", filter);
+  const attendance = await AttendanceModel.find(filter);
+  return attendance;
+};
 
-//     const presentPercentage = (presentCount / totalAttendance) * 100;
-//     const absentPercentage = (absentCount / totalAttendance) * 100;
-
-//     res.success(
-//       {
-//         attendance,
-//         presentPercentage,
-//         absentPercentage,
-//       },
-//       'Attendance fetched successfully'
-//     );
-// };
 const getAttendanceByBatch = async (batchId) => {
   const attendance = await AttendanceModel.find({ batch: batchId });
   return attendance;
@@ -37,41 +26,6 @@ const getAttendanceByBatch = async (batchId) => {
 module.exports = {
   createAttendance,
   getAttendanceByStudent,
-  getAttendanceByBatch
+  getAttendanceByBatch,
+  getAttendanceByStudentLastMonth
 };
-
-
-
-
-
-
-
-
-
-// const AttendanceRecord = require("../schema/attendanceSchema");
-// const createAttendanceRecord = async (data) => {
-//   const newAttendanceRecord = new AttendanceRecord(data);
-//   const createdAttendanceRecord = await newAttendanceRecord.save();
-//   return createdAttendanceRecord;
-// };
-
-// const findStudentAccountById = async (studentId) => {
-//     const student = await AttendanceRecord.findOne({ studentId }).lean();
-//     return student;
-//   };
-// const findStudentAttendanceByslotId = async (slotId) => {
-//     const student = await AttendanceRecord.findOne({ slotId }).lean();
-//     return student;
-//   };
-// const findStudentRecordByslotId = async (slotId) => {
-//     const studentRecordCount = await AttendanceRecord.find({slotId:slotId}).count();
-//     const studentAttendance = await AttendanceRecord.find({slotId:slotId});
-//     const studentRecord={studentRecordCount,studentAttendance}
-//     return studentRecord;
-//   };
-// module.exports={
-//     createAttendanceRecord,
-//     findStudentAccountById,
-//     findStudentAttendanceByslotId,
-//     findStudentRecordByslotId
-// }
