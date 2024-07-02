@@ -7,10 +7,28 @@ const createAttendance = async (data) => {
 };
 
 const getAttendanceByStudent = async (studentId) => {
-  const attendance = await AttendanceModel.find({ student: studentId });
+  console.log("studentId",studentId);
+  const attendance = await AttendanceModel.find({ studentId: studentId });
   return attendance;
 };
+// const getAttendanceByStudent = async (studentId) => {
+//     const attendance = await AttendanceModel.find({ studentId: studentId });
+//     const totalAttendance = attendance.length;
+//     const presentCount = attendance.filter((a) => a.status === 'present').length;
+//     const absentCount = attendance.filter((a) => a.status === 'absent').length;
 
+//     const presentPercentage = (presentCount / totalAttendance) * 100;
+//     const absentPercentage = (absentCount / totalAttendance) * 100;
+
+//     res.success(
+//       {
+//         attendance,
+//         presentPercentage,
+//         absentPercentage,
+//       },
+//       'Attendance fetched successfully'
+//     );
+// };
 const getAttendanceByBatch = async (batchId) => {
   const attendance = await AttendanceModel.find({ batch: batchId });
   return attendance;
